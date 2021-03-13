@@ -42,7 +42,7 @@
                         <TextArea fx:id="textInput" layoutX="28.0" layoutY="48.0" prefHeight="200.0" prefWidth="587.0" style="-fx-background-color: #f5f5f5;" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" />
                         <TextField fx:id="fileInput" layoutX="110.0" layoutY="261.0" prefHeight="25.0" prefWidth="288.0" AnchorPane.leftAnchor="110.0" />
                         <TextField fx:id="bpmInput" layoutX="110.0" layoutY="295.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.leftAnchor="110.0" />
-                        <ChoiceBox fx:id="choiceBox" layoutX="110.0" layoutY="333.0" prefHeight="25.0" prefWidth="172.0" AnchorPane.leftAnchor="110.0" onMouseClicked="#onSelectOptiononChoiceBox"/>
+                        <ChoiceBox fx:id="choiceBox" layoutX="110.0" layoutY="333.0" prefHeight="25.0" prefWidth="172.0" AnchorPane.leftAnchor="110.0" onMouseClicked="#onSelectInstrument"/>
                         <Button layoutX="642.0" layoutY="387.0" mnemonicParsing="false" style="-fx-background-color: #67B6B6;" text="Gerar música!" textFill="WHITESMOKE" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" onMouseClicked="#OnGenerateMusicButtonClicked">
                             <font>
                                 <Font size="14.0" />

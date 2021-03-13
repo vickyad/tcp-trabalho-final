@@ -5,7 +5,7 @@ import org.jfugue.player.Player;
 
 public class MyMusicApp
 {
-    public static void main(String[] args)
+    public static void play_music()
     {
         Player player = new Player();
         Pattern pattern = new Pattern("C D E F G A B");
