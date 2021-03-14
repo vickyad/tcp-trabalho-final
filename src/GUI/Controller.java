@@ -1,5 +1,6 @@
 package GUI;
 
+import Services.MusicValidationService;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -10,8 +11,6 @@ import Music.Music;
 
 
 public class Controller {
-    String errorMessage = null;
-
     @FXML
     private TextField fileInput;
     @FXML
@@ -40,20 +39,21 @@ public class Controller {
 
     @FXML
     public void OnGenerateMusicButtonClicked() {
-        String rawText = getTextInput();
-        String bpmString = getBPMInput();
-        String initialInstrument = onSelectInstrument();
-        int initialBPM = 40;
+        String textInput = getTextInput();
+        String selectedInstrument = onSelectInstrument();
+        int initialBPM = MusicValidationService.parseBPM(getBPMInput());
 
-        if(isValid(rawText, initialInstrument, bpmString, initialBPM)) {
+        if(MusicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
             System.out.println("Tudo certo, hora de mandar aquele");
+
+            Music music = new Music(textInput, selectedInstrument, initialBPM);
 
             String fileName = getFileInput();
             if(fileName.equals("")) {
                 fileName = "music_generated";
             }
         } else {
-            createAlert("Erro!", errorMessage);
+            createAlert("Erro!", MusicValidationService.errorMessage);
         }
     }
 
@@ -82,32 +82,5 @@ public class Controller {
         empty_string.setTitle(title);
         empty_string.setHeaderText(message);
         empty_string.showAndWait();
-    }
-
-    public boolean isValid(String text, String instrument, String bpm_string, int bpm) {
-        if(text.trim().equals("")) {
-            errorMessage = "Por acaso você é burro? Como eu vou musicar uma string vazia?";
-            return false;
-        } else if(text.length() > 240){
-            errorMessage = "O texto não pode ter mais que 240 caracteres, meu consagradinho";
-            return false;
-        } else if(instrument == null) {
-            errorMessage = "Velho, preciso de um instrumento pra tocar, né??";
-            return false;
-        }
-
-        try {
-            bpm = Integer.parseInt(bpm_string);
-
-            if(bpm < 40 || bpm > 220) {
-                errorMessage = "O BPM deve ser um valor entre 40 e 220";
-                return false;
-            }
-        } catch (NumberFormatException exception) {
-            errorMessage = "Mano, na moral, BPM é número, né caralho?";
-            return false;
-        }
-
-        return true;
     }
 }
