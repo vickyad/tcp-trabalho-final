@@ -6,21 +6,18 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
-import Music.MyMusicApp;
+import Music.Music;
 
 
 public class Controller {
-    String instruments[] = {"Violino", "Piano", "Guitarra", "Choro"};
+    String errorMessage = null;
 
     @FXML
     private TextField fileInput;
-
     @FXML
     private TextField bpmInput;
-
     @FXML
     private TextArea textInput;
-
     @FXML
     private ChoiceBox choiceBox;
 
@@ -32,7 +29,7 @@ public class Controller {
 
     @FXML
     public void OnPlayButtonClicked() {
-        MyMusicApp.play_music();
+        Music.play_music();
         //System.out.println("som na caixa, DJ");
     }
 
@@ -43,41 +40,21 @@ public class Controller {
 
     @FXML
     public void OnGenerateMusicButtonClicked() {
-        String raw_text = getTextInput();
-        if(raw_text.trim() == "") {
-            createAlert("Erro!", "Por acaso você é burro? Como eu vou musicar uma string vazia?");
-        } else {
-            System.out.println(raw_text);
-        }
+        String rawText = getTextInput();
+        String bpmString = getBPMInput();
+        String initialInstrument = onSelectInstrument();
+        int initialBPM = 40;
 
-        String file_name = getFileInput();
-        if(file_name == "") {
-            file_name = "music_generated";
-        }
-        System.out.println(file_name);
+        if(isValid(rawText, initialInstrument, bpmString, initialBPM)) {
+            System.out.println("Tudo certo, hora de mandar aquele");
 
-        String bpm_string = getBPMInput();
-        int initial_bpm;
-        try {
-            initial_bpm = Integer.parseInt(bpm_string);
-
-            if(initial_bpm < 40 || initial_bpm > 220) {
-                createAlert("Erro!", "O BPM deve ser um valor entre 40 e 220");
-            } else {
-                System.out.println(initial_bpm);
+            String fileName = getFileInput();
+            if(fileName.equals("")) {
+                fileName = "music_generated";
             }
-        } catch (NumberFormatException exception) {
-            createAlert("Erro!", "Mano, na moral, BPM é número, né caralho?");
-        }
-
-        String initial_instrument = onSelectInstrument();
-        if(initial_instrument == null) {
-            createAlert("Erro!", "Velho, preciso de um instrumento pra tocar, né??");
         } else {
-            System.out.println(initial_instrument);
+            createAlert("Erro!", errorMessage);
         }
-
-        System.out.println("música sendo gerada...");
     }
 
     @FXML
@@ -105,5 +82,32 @@ public class Controller {
         empty_string.setTitle(title);
         empty_string.setHeaderText(message);
         empty_string.showAndWait();
+    }
+
+    public boolean isValid(String text, String instrument, String bpm_string, int bpm) {
+        if(text.trim().equals("")) {
+            errorMessage = "Por acaso você é burro? Como eu vou musicar uma string vazia?";
+            return false;
+        } else if(text.length() > 240){
+            errorMessage = "O texto não pode ter mais que 240 caracteres, meu consagradinho";
+            return false;
+        } else if(instrument == null) {
+            errorMessage = "Velho, preciso de um instrumento pra tocar, né??";
+            return false;
+        }
+
+        try {
+            bpm = Integer.parseInt(bpm_string);
+
+            if(bpm < 40 || bpm > 220) {
+                errorMessage = "O BPM deve ser um valor entre 40 e 220";
+                return false;
+            }
+        } catch (NumberFormatException exception) {
+            errorMessage = "Mano, na moral, BPM é número, né caralho?";
+            return false;
+        }
+
+        return true;
     }
 }

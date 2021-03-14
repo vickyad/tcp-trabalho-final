@@ -3,7 +3,7 @@ package Music;
 import org.jfugue.pattern.Pattern;
 import org.jfugue.player.Player;
 
-public class MyMusicApp
+public class Music
 {
     public static void play_music()
     {
