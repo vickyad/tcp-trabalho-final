@@ -6,13 +6,12 @@ import org.jfugue.player.Player;
 
 public class Music
 {
-    // atributos sujeitos a mundancas
+
     private String rawText;
     private String initialInstrument;
     private int initialBPM;
     private int currentBPM;
 
-    // construtor inicializando os valores nos atributos
     public Music(String rawText, String initialInstrument, int initialBPM){
         this.rawText = rawText;
         this.initialInstrument = initialInstrument;
