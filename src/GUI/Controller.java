@@ -28,8 +28,7 @@ public class Controller {
 
     @FXML
     public void OnPlayButtonClicked() {
-        Music.play_music();
-        //System.out.println("som na caixa, DJ");
+        System.out.println("som na caixa, DJ");
     }
 
     @FXML
@@ -46,7 +45,7 @@ public class Controller {
         if(MusicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
             System.out.println("Tudo certo, hora de mandar aquele");
 
-            Music music = new Music(textInput, selectedInstrument, initialBPM);
+            Music music = new Music();
 
             String fileName = getFileInput();
             if(fileName.equals("")) {
