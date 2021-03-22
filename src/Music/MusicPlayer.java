@@ -1,36 +1,22 @@
 package Music;
 
-
+import Services.MusicValidationService;
+import org.jfugue.pattern.Pattern;
 import org.jfugue.player.Player;
-import org.jfugue.midi.*;
-
-import java.io.File;
-import java.io.IOException;
 
 public class MusicPlayer {
+    private Player player;      // objeto da biblioteca JFugue
+    // private MusicJFugue music = new MusicJFugue(raw_text);
 
-    private Player player;
-    private String music;
+    void setMusic() {
 
-    public MusicPlayer() {
-        player = new Player();
-        music="";
-    }
-
-    public MusicPlayer(String music) {
-        player = new Player();
-        this.music = music;
-    }
-
-    void setMusic(MusicJFugue music) {
-        this.music = music.toJFuguePlayableString();
     }
 
     void playMusic(){
-        player.play(music);
+
     }             // toca a música
 
     void saveMusic(String filename){
-        
+
     }     // salva a música
 }
