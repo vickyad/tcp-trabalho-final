@@ -1,9 +1,24 @@
 package Music;
 
+import java.util.Random;
+
 public enum NoteEnum {
-    DO(0), RE(2), MI(4), FA(5), SOL(7), LA(9), SI(11);
+    C(0), D(2), E(4), F(5), G(7), A(9), B(11);
+    private final int value;
 
     NoteEnum(int i) {
+        this.value = i;
+    }
 
+    public int getValue() {
+        return value;
+    }
+
+    static String getRandomNote(int currentOctave) {
+        NoteEnum[] notes = values();
+        Random rand = new Random();
+        NoteEnum randomNote = notes[rand.nextInt(notes.length)];
+
+        return String.valueOf(currentOctave + randomNote.value);
     }
 }
