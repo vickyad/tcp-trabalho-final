@@ -7,7 +7,7 @@ public class MusicValidationService {
 
     public static boolean validateString(String text, String instrument) {
         if(text.trim().equals("")) {
-           errorMessage = "Por acaso você é burro? Como eu vou musicar uma string vazia?";
+            errorMessage = "Por acaso você é burro? Como eu vou musicar uma string vazia?";
             return false;
         } else if(text.length() > 240){
             errorMessage = "O texto não pode ter mais que 240 caracteres, meu consagradinho";

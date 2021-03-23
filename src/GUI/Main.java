@@ -1,5 +1,6 @@
 package GUI;
 
+import Music.TextConversor;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +23,9 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+        //launch(args);
+        TextConversor tc = new TextConversor();
+        tc.convert("Hello! + My T+ED is \nBPM- Fox - The Boring? Camel");
     }
 
 }
