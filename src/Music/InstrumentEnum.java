@@ -14,7 +14,7 @@ public enum InstrumentEnum {
         return value;
     }
 
-    static String getRandomInstrument() {
+    public static String getRandomInstrument() {
         InstrumentEnum[] instruments = values();
         Random rand = new Random();
         InstrumentEnum randomInstrument = instruments[rand.nextInt(instruments.length)];

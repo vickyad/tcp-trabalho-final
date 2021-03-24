@@ -1,4 +1,7 @@
-package Music;
+package Services;
+
+import Music.InstrumentEnum;
+import Music.NoteEnum;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,7 +9,7 @@ import java.util.List;
 import java.util.regex.*;
 import java.util.stream.Collectors;
 
-public class TextConversor {
+public class TextConvertorService {
     private static final String PAUSE = "R";
     private static final String BPM = "T";
     private static final String INSTRUMENT = "I";
@@ -16,7 +19,7 @@ public class TextConversor {
     private int currentVolume;      // volume atual da música
     private int currentBpm;         // BPM atual (primeiramente escolhido pelo tal do usuário)
 
-    public TextConversor(){
+    public TextConvertorService(){
         currentOctave = 1;
     }
 

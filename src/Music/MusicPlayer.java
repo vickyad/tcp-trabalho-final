@@ -1,5 +1,6 @@
 package Music;
 
+import Services.TextConvertorService;
 import org.jfugue.pattern.Pattern;
 import org.jfugue.player.Player;
 
@@ -10,7 +11,7 @@ public class MusicPlayer {
     private final String raw_text = "Hello! + My T+ED is \nBPM- Fox - The Boring? Camel";
     //private Player player;      // objeto da biblioteca JFugue
     private final Music music = new Music(raw_text);
-    private final TextConversor convertor = new TextConversor();
+    private final TextConvertorService convertor = new TextConvertorService();
     private String music_string;
     private Player player = new Player();
 

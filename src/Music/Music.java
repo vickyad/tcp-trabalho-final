@@ -1,5 +1,7 @@
 package Music;
 
+import Services.TextConvertorService;
+
 public class Music {
     private static final int MAX_VOLUME = 127;
     // protected int initialBpm;
@@ -9,7 +11,7 @@ public class Music {
     public String music;
 
     public Music(String raw_text) {
-        TextConversor textConversor = new TextConversor();
+        TextConvertorService textConversor = new TextConvertorService();
         initialVolume = (int) (0.2 * MAX_VOLUME);
         music = textConversor.convert(raw_text, initialVolume);
     }

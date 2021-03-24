@@ -8,7 +8,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import Music.MusicPlayer;
-import Music.TextConversor;
+import Services.TextConvertorService;
 import Services.MusicValidationService;
 
 public class Controller {
@@ -52,7 +52,7 @@ public class Controller {
         int initialBPM = MusicValidationService.parseBPM(getBPMInput());
 
         if(MusicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
-            TextConversor convertor = new TextConversor();
+            TextConvertorService convertor = new TextConvertorService();
             int INITIAL_VOLUME = 25;
 
             convertor.convert(textInput, INITIAL_VOLUME);

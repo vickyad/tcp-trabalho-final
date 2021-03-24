@@ -14,7 +14,7 @@ public enum NoteEnum {
         return value;
     }
 
-    static String getRandomNote(int currentOctave) {
+    public static String getRandomNote(int currentOctave) {
         NoteEnum[] notes = values();
         Random rand = new Random();
         NoteEnum randomNote = notes[rand.nextInt(notes.length)];
