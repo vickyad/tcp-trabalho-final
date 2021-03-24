@@ -9,7 +9,7 @@ import java.io.IOException;
 public class MusicPlayer {
     private final String raw_text = "Hello! + My T+ED is \nBPM- Fox - The Boring? Camel";
     //private Player player;      // objeto da biblioteca JFugue
-    private final MusicJFugue music = new MusicJFugue(raw_text);
+    private final Music music = new Music(raw_text);
     private final TextConversor convertor = new TextConversor();
     private String music_string;
     private Player player = new Player();

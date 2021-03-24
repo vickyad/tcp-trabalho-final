@@ -3,19 +3,18 @@ package Test;
 import static org.junit.Assert.*;
 
 import Music.NoteEnum;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class NoteEnumTest {
     @Test
     public void testEnumNames() {
-        Assert.assertEquals("A", NoteEnum.A.name());
-        assertEquals("B",NoteEnum.B.name());
-        assertEquals("C",NoteEnum.C.name());
-        assertEquals("D",NoteEnum.D.name());
-        assertEquals("E",NoteEnum.E.name());
-        assertEquals("F",NoteEnum.F.name());
-        assertEquals("G",NoteEnum.G.name());
+        assertEquals("A", NoteEnum.A.name());
+        assertEquals("B", NoteEnum.B.name());
+        assertEquals("C", NoteEnum.C.name());
+        assertEquals("D", NoteEnum.D.name());
+        assertEquals("E", NoteEnum.E.name());
+        assertEquals("F", NoteEnum.F.name());
+        assertEquals("G", NoteEnum.G.name());
     }
 
     @Test
@@ -28,4 +27,6 @@ public class NoteEnumTest {
         assertEquals(5, NoteEnum.F.getValue());
         assertEquals(7, NoteEnum.G.getValue());
     }
+
+    // TO-DO: add verification for random generation
 }

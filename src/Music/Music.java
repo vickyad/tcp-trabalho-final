@@ -5,9 +5,12 @@ public class Music {
     // protected int initialBpm;
     // protected int initialOctave;
     // protected int initialInstrument;
-    protected int initialVolume;
+    public final int initialVolume;
+    public String music;
 
-    public Music() {
+    public Music(String raw_text) {
+        TextConversor textConversor = new TextConversor();
         initialVolume = (int) (0.2 * MAX_VOLUME);
+        music = textConversor.convert(raw_text, initialVolume);
     }
 }

@@ -24,4 +24,6 @@ public class InstrumentEnumTest {
         assertEquals(56, InstrumentEnum.Trumpet.getValue());
         assertEquals(32, InstrumentEnum.Bass.getValue());
     }
+
+    // TO-DO: add verification for random generation
 }
