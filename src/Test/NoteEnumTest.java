@@ -1,12 +1,15 @@
-package Music;
+package Test;
 
 import static org.junit.Assert.*;
+
+import Music.NoteEnum;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class NoteEnumTest {
     @Test
     public void testEnumNames() {
-        assertEquals("A",NoteEnum.A.name());
+        Assert.assertEquals("A", NoteEnum.A.name());
         assertEquals("B",NoteEnum.B.name());
         assertEquals("C",NoteEnum.C.name());
         assertEquals("D",NoteEnum.D.name());

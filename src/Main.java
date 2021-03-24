@@ -1,5 +1,3 @@
-package GUI;
-
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,7 +12,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("userInterface.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("GUI/userInterface.fxml"));
         primaryStage.setTitle("Jukebox");
         primaryStage.setScene(new Scene(root, 779, 633));
         primaryStage.show();

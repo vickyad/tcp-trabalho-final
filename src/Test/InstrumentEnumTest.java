@@ -1,12 +1,15 @@
-package Music;
+package Test;
 
 import static org.junit.Assert.*;
+
+import Music.InstrumentEnum;
+import org.junit.Assert;
 import org.junit.Test;
 
 public class InstrumentEnumTest {
     @Test
     public void testEnumNames() {
-        assertEquals("Piano",InstrumentEnum.Piano.name());
+        Assert.assertEquals("Piano", InstrumentEnum.Piano.name());
         assertEquals("Guitar",InstrumentEnum.Guitar.name());
         assertEquals("Violin",InstrumentEnum.Violin.name());
         assertEquals("Trumpet",InstrumentEnum.Trumpet.name());
