@@ -1,14 +1,15 @@
 package GUI;
 
-import Services.MusicValidationService;
-import javafx.collections.FXCollections;
+import java.io.IOException;
 import javafx.fxml.FXML;
+import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TextArea;
-import Music.Music;
-
+import javafx.scene.control.TextField;
+import Music.MusicPlayer;
+import Music.TextConversor;
+import Services.MusicValidationService;
 
 public class Controller {
     @FXML
@@ -20,20 +21,28 @@ public class Controller {
     @FXML
     private ChoiceBox choiceBox;
 
+    private final MusicPlayer mp = new MusicPlayer();
+
     @FXML
     public void initialize() {
-        String instruments[] = {"Violino", "Piano", "Guitarra", "Choro"};
+        String[] instruments = {"Violino", "Piano", "Guitarra", "Baixo", "Trompete"};
         choiceBox.setItems(FXCollections.observableArrayList(instruments));
     }
 
     @FXML
     public void OnPlayButtonClicked() {
-        System.out.println("som na caixa, DJ");
+        mp.playMusic();
     }
 
     @FXML
-    public void OnDownloadButtonClicked() {
-        System.out.println("aguarde, fazendo download...");
+    public void OnDownloadButtonClicked() throws IOException {
+        String fileName = getFileInput();
+
+        if(fileName.equals("")) {
+            fileName = "music_generated";
+        }
+        mp.saveMusic(fileName);
+        createSuccessAlert("Download feito com sucesso");
     }
 
     @FXML
@@ -43,16 +52,15 @@ public class Controller {
         int initialBPM = MusicValidationService.parseBPM(getBPMInput());
 
         if(MusicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
-            System.out.println("Tudo certo, hora de mandar aquele");
+            TextConversor convertor = new TextConversor();
+            int INITIAL_VOLUME = 25;
 
-            Music music = new Music();
+            convertor.convert(textInput, INITIAL_VOLUME);
+            mp.setMusic();
 
-            String fileName = getFileInput();
-            if(fileName.equals("")) {
-                fileName = "music_generated";
-            }
+            createSuccessAlert("Música criada com sucesso");
         } else {
-            createAlert("Erro!", MusicValidationService.errorMessage);
+            createErrorAlert(MusicValidationService.errorMessage);
         }
     }
 
@@ -76,9 +84,16 @@ public class Controller {
         return (String) choiceBox.getSelectionModel().getSelectedItem();
     }
 
-    public void createAlert(String title, String message) {
+    public void createErrorAlert(String message) {
         Alert empty_string = new Alert(Alert.AlertType.ERROR);
-        empty_string.setTitle(title);
+        empty_string.setTitle("Erro!");
+        empty_string.setHeaderText(message);
+        empty_string.showAndWait();
+    }
+
+    public void createSuccessAlert(String message) {
+        Alert empty_string = new Alert(Alert.AlertType.CONFIRMATION);
+        empty_string.setTitle("Sucesso");
         empty_string.setHeaderText(message);
         empty_string.showAndWait();
     }

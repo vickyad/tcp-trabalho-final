@@ -6,6 +6,6 @@ public class MusicJFugue extends Music {
     public MusicJFugue (String raw_text) {
         TextConversor textConversor = new TextConversor();
 
-        music = textConversor.convert(raw_text);
+        music = textConversor.convert(raw_text, initialVolume);
     }
 }

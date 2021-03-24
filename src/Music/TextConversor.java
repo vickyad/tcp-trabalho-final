@@ -1,8 +1,5 @@
 package Music;
 
-import org.jetbrains.annotations.NotNull;
-import org.jfugue.theory.Note;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,40 +11,34 @@ public class TextConversor {
     private static final String BPM = "T";
     private static final String INSTRUMENT = "I";
     private static final String BLANK_SPACE = " ";
-    private static final String INVALID_CHARACTERES = "[^a-gimoptuA-GIMOPTU\\+\\-\\s\\n]";
     private int currentOctave;      // oitava do momento
     private int currentInstrument;  // instrumento atual (primeiramente escolhido pelo tal do usuário)
     private int currentVolume;      // volume atual da música
     private int currentBpm;         // BPM atual (primeiramente escolhido pelo tal do usuário)
-    private NoteEnum currentNote;   //nota atual
-    private Randomizer randomizer = new Randomizer();
 
     public TextConversor(){
         currentOctave = 1;
     }
 
-    public String convert(String raw_text) {
-        String musical_text = raw_text;
-        System.out.println(musical_text);
-
-        List<String> musical_list = cleanString(musical_text);
-        System.out.println(musical_list.toString());
+    public String convert(String raw_text, int initialVolume) {
+        List<String> musical_list = cleanString(raw_text);
+        currentVolume = initialVolume;
+        currentBpm = 40;
 
         if(!musical_list.isEmpty()){
             musical_list = addPauses(musical_list);
-
-            System.out.println(musical_list.toString());
-
             musical_list = convertNotes(musical_list);
-
-            System.out.println(musical_list.toString());
-
-            setBpm(musical_text);
-            setInstruments(musical_text);
-            setVolume(musical_text);
+            setBpm(musical_list);
+            setInstruments(musical_list);
+            musical_list = setVolume(musical_list, initialVolume);
         }
 
-        return musical_text;
+        StringBuilder musical_string = new StringBuilder();
+        for(String item : musical_list) {
+            musical_string.append(item).append(BLANK_SPACE);
+        }
+
+        return musical_string.toString();
     }
 
     // Passo 1: remover todas os caracteres que não importam
@@ -120,18 +111,50 @@ public class TextConversor {
     }
 
     //Passo 4: ajuste nos BPM's
-    private void setBpm(String text) {
-        text = BPM + currentBpm + BLANK_SPACE + text;
+    private void setBpm(List<String> list) {
+        list.add(0, BPM + currentBpm);
+
+        if(list.contains("BPM+")){
+            if(currentBpm <= 170){
+                currentBpm+= 50;
+            }
+            list.set(list.indexOf("BPM+"), BPM + currentBpm);
+        } else if(list.contains("BPM-")) {
+            if(currentBpm >= 90){
+                currentBpm-= 50;
+            }
+            list.set(list.indexOf("BPM-"), BPM + currentBpm);
+        }
     }
 
     // Passo 5: ajuste dos instrumentos
-    private void setInstruments(String text) {
-        text = INSTRUMENT + currentInstrument + BLANK_SPACE + text;
-        text = text.replace("\n", INSTRUMENT + randomizer.getRandomInstrument() + BLANK_SPACE);
+    private void setInstruments(List<String> list) {
+        list.add(0, INSTRUMENT + currentInstrument);
+
+        if(list.contains("\n")){
+            list.set(list.indexOf("\n"), INSTRUMENT + InstrumentEnum.getRandomInstrument());
+        }
+
     }
 
     // Passo 6: ajuste de volume
-    private void setVolume(String text) {
+    private List<String> setVolume(List<String> list, int initialVolume) {
+        List<String> result = new ArrayList<>();
+        for (String item : list) {
+            if(item.equals("+")) {
+                if(currentVolume * 2 < 100) {
+                    currentVolume *= 2;
+                } else {
+                    currentVolume *= 100;
+                }
+                result.add(":CON(7," + currentVolume + ")");
+            } else if (item.equals("-")) {
+                result.add(":CON(7," + initialVolume + ")");
+            } else {
+                result.add(item);
+            }
+        }
 
+        return result;
     }
 }
