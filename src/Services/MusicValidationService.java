@@ -2,10 +2,10 @@ package Services;
 
 import Constants.MessagesToUserConstants;
 
-public class MusicValidationService {
+public class MusicValidationService implements IMusicValidationService {
     public static String errorMessage = null;
 
-    public static boolean validateString(String text, String instrument) {
+    public boolean validateString(String text, String instrument) {
         if(text.trim().equals("")) {
             errorMessage = MessagesToUserConstants.EMPTY_STRING_MESSAGE;
             return false;
@@ -19,7 +19,7 @@ public class MusicValidationService {
         return true;
     }
 
-    public static int parseBPM(String bpm_string){
+    public int parseBPM(String bpm_string){
         int bpm;
         try {
             bpm = Integer.parseInt(bpm_string);

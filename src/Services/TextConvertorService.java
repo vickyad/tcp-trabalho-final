@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.regex.*;
 import java.util.stream.Collectors;
 
-public class TextConvertorService {
+public class TextConvertorService implements ITextConvertorService{
     private int currentOctave;
     private int currentInstrument;
     private int currentVolume;
@@ -43,7 +43,6 @@ public class TextConvertorService {
         return musical_string.toString();
     }
 
-    // Passo 1: remover todas os caracteres que não importam
     private ArrayList<String> cleanString(String text) {
         String regex = "(BPM\\+|BPM\\-|T\\+|T\\-|[a-gA-G]|[iou]|[IOU]|\\+|\\-|\\.|\\?|\\s|\\\\n)";
         Pattern pattern = Pattern.compile(regex);
@@ -58,12 +57,10 @@ public class TextConvertorService {
         return found;
     }
 
-    // Passo 2: adicionar as pausas
     private List<String> addPauses(List<String> list) {
         return list.stream().map(item -> item.equals(TextConstants.BLANK_SPACE)? JFugueMusicConstants.PAUSE: item).collect(Collectors.toList());
     }
 
-    // Passo 3: conversão das notas nas oitavas certas
     private List<String> convertNotes(List<String> list) {
         // substituir as notas com as oitavas certas
         HashMap< String, NoteEnum> notes = new HashMap<>();
@@ -110,7 +107,6 @@ public class TextConvertorService {
         return result;
     }
 
-    //Passo 4: ajuste nos BPM's
     private void setBpm(List<String> list) {
         list.add(0, JFugueMusicConstants.BPM + currentBpm);
 
@@ -127,7 +123,6 @@ public class TextConvertorService {
         }
     }
 
-    // Passo 5: ajuste dos instrumentos
     private void setInstruments(List<String> list) {
         list.add(0, JFugueMusicConstants.INSTRUMENT + currentInstrument);
 
@@ -137,7 +132,6 @@ public class TextConvertorService {
 
     }
 
-    // Passo 6: ajuste de volume
     private List<String> setVolume(List<String> list, int initialVolume) {
         List<String> result = new ArrayList<>();
         for (String item : list) {

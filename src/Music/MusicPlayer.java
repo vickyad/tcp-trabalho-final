@@ -5,15 +5,15 @@ import org.jfugue.player.Player;
 import java.io.File;
 import java.io.IOException;
 
-public class MusicPlayer {
+public class MusicPlayer implements IMusicPlayer {
     private final static Player player = new Player();
 
-    public static void playMusic(String musicString){
+    public void playMusic(String musicString){
         Pattern pattern = new Pattern(musicString);
         player.play(pattern);
     }
 
-    public static boolean saveMusic(String musicString, String filename) {
+    public boolean saveMusic(String musicString, String filename) {
         try{
             File file = new File(filename + ".mid");
             org.jfugue.pattern.Pattern pat = new org.jfugue.pattern.Pattern();

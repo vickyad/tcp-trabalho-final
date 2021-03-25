@@ -23,6 +23,7 @@ public class Controller {
     private ChoiceBox choiceBox;
 
     private Music music;
+    private final MusicPlayer player = new MusicPlayer();
 
     @FXML
     private void initialize() {
@@ -32,11 +33,12 @@ public class Controller {
 
     @FXML
     private void OnGenerateMusicButtonClicked() {
+        MusicValidationService musicValidationService = new MusicValidationService();
         String textInput = getTextInput();
         String selectedInstrument = onSelectInstrument();
-        int initialBPM = MusicValidationService.parseBPM(getBPMInput());
+        int initialBPM = musicValidationService.parseBPM(getBPMInput());
 
-        if(MusicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
+        if(musicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
             music = new Music(textInput, initialBPM, InstrumentEnum.valueOf(selectedInstrument).getValue());
 
             if(!music.musicString.isBlank()) {
@@ -51,7 +53,7 @@ public class Controller {
 
     @FXML
     private void OnPlayButtonClicked() {
-        MusicPlayer.playMusic(music.musicString);
+        player.playMusic(music.musicString);
     }
 
     @FXML
@@ -61,7 +63,7 @@ public class Controller {
         if(fileName.equals("")) {
             fileName = "music_generated";
         }
-        if(MusicPlayer.saveMusic(music.musicString, fileName)) {
+        if(player.saveMusic(music.musicString, fileName)) {
             createSuccessAlert(MessagesToUserConstants.SUCCESSFUL_DOWNLOAD);
         } else {
             createErrorAlert(MessagesToUserConstants.UNSUCCESSFUL_DOWNLOAD);
