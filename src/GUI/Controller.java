@@ -7,8 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import Music.Music;
 import Music.MusicPlayer;
-import Services.TextConvertorService;
+import Music.InstrumentEnum;
 import Services.MusicValidationService;
 
 public class Controller {
@@ -22,27 +23,12 @@ public class Controller {
     private ChoiceBox choiceBox;
 
     private final MusicPlayer musicPlayer = new MusicPlayer();
+    private Music music;
 
     @FXML
     private void initialize() {
-        String[] instruments = {"Violino", "Piano", "Guitarra", "Baixo", "Trompete"};
+        String[] instruments = {"Violin", "Piano", "Guitar", "Bass", "Trumpet"};
         choiceBox.setItems(FXCollections.observableArrayList(instruments));
-    }
-
-    @FXML
-    private void OnPlayButtonClicked() {
-        musicPlayer.playMusic();
-    }
-
-    @FXML
-    private void OnDownloadButtonClicked() throws IOException {
-        String fileName = getFileInput();
-
-        if(fileName.equals("")) {
-            fileName = "music_generated";
-        }
-        musicPlayer.saveMusic(fileName);
-        createSuccessAlert("Download feito com sucesso");
     }
 
     @FXML
@@ -52,16 +38,27 @@ public class Controller {
         int initialBPM = MusicValidationService.parseBPM(getBPMInput());
 
         if(MusicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
-            TextConvertorService convertor = new TextConvertorService();
-            int INITIAL_VOLUME = 25;
-
-            convertor.convert(textInput, INITIAL_VOLUME);
-            musicPlayer.setMusic();
-
+            music = new Music(textInput, initialBPM, InstrumentEnum.valueOf(selectedInstrument).getValue());
             createSuccessAlert("Música criada com sucesso");
         } else {
             createErrorAlert(MusicValidationService.errorMessage);
         }
+    }
+
+    @FXML
+    private void OnPlayButtonClicked() {
+        musicPlayer.playMusic(music.musicString);
+    }
+
+    @FXML
+    private void OnDownloadButtonClicked() throws IOException {
+        String fileName = getFileInput();
+
+        if(fileName.equals("")) {
+            fileName = "music_generated";
+        }
+        musicPlayer.saveMusic(music.musicString, fileName);
+        createSuccessAlert("Download feito com sucesso");
     }
 
     @FXML

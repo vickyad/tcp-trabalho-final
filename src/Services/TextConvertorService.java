@@ -2,7 +2,6 @@ package Services;
 
 import Music.InstrumentEnum;
 import Music.NoteEnum;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +22,12 @@ public class TextConvertorService {
         currentOctave = 1;
     }
 
-    public String convert(String raw_text, int initialVolume) {
-        List<String> musical_list = cleanString(raw_text);
+    public String convert(String raw_text, int initialVolume, int initialBpm, int initialInstrument) {
         currentVolume = initialVolume;
-        currentBpm = 40;
+        currentBpm = initialBpm;
+        currentInstrument = initialInstrument;
+
+        List<String> musical_list = cleanString(raw_text);
 
         if(!musical_list.isEmpty()){
             musical_list = addPauses(musical_list);
@@ -77,8 +78,6 @@ public class TextConvertorService {
         notes.put("G", NoteEnum.G);
 
         String lastChange = "";
-
-        currentOctave = 1;
 
         List<String> result = new ArrayList<>();
         for (String item : list) {
@@ -145,10 +144,10 @@ public class TextConvertorService {
         List<String> result = new ArrayList<>();
         for (String item : list) {
             if(item.equals("+")) {
-                if(currentVolume * 2 < 100) {
+                if(currentVolume * 2 < 127) {
                     currentVolume *= 2;
                 } else {
-                    currentVolume *= 100;
+                    currentVolume = 127;
                 }
                 result.add(":CON(7," + currentVolume + ")");
             } else if (item.equals("-")) {
