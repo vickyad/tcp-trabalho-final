@@ -22,7 +22,6 @@ public class Controller {
     @FXML
     private ChoiceBox choiceBox;
 
-    private final MusicPlayer musicPlayer = new MusicPlayer();
     private Music music;
 
     @FXML
@@ -52,7 +51,7 @@ public class Controller {
 
     @FXML
     private void OnPlayButtonClicked() {
-        musicPlayer.playMusic(music.musicString);
+        MusicPlayer.playMusic(music.musicString);
     }
 
     @FXML
@@ -62,7 +61,7 @@ public class Controller {
         if(fileName.equals("")) {
             fileName = "music_generated";
         }
-        if(musicPlayer.saveMusic(music.musicString, fileName)) {
+        if(MusicPlayer.saveMusic(music.musicString, fileName)) {
             createSuccessAlert(MessagesToUserConstants.SUCCESSFUL_DOWNLOAD);
         } else {
             createErrorAlert(MessagesToUserConstants.UNSUCCESSFUL_DOWNLOAD);
