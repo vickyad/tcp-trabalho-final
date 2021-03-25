@@ -13,14 +13,16 @@ public class MusicPlayer {
         player.play(pattern);
     }
 
-    public void saveMusic(String musicString, String filename) {
+    public boolean saveMusic(String musicString, String filename) {
         try{
             File file = new File(filename + ".mid");
             org.jfugue.pattern.Pattern pat = new org.jfugue.pattern.Pattern();
             pat.add(musicString);
             org.jfugue.midi.MidiFileManager.savePatternToMidi(pat, file);
+            return true;
         } catch (IOException e){
             e.printStackTrace();
+            return false;
         }
     }
 }

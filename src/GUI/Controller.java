@@ -1,6 +1,6 @@
 package GUI;
 
-import java.io.IOException;
+import Constants.MessagesToUserConstants;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
@@ -39,7 +39,12 @@ public class Controller {
 
         if(MusicValidationService.validateString(textInput, selectedInstrument) && initialBPM != -1) {
             music = new Music(textInput, initialBPM, InstrumentEnum.valueOf(selectedInstrument).getValue());
-            createSuccessAlert("Música criada com sucesso");
+
+            if(!music.musicString.isBlank()) {
+                createSuccessAlert(MessagesToUserConstants.SUCCESSFUL_MUSIC_CREATION);
+            } else {
+                createErrorAlert(MessagesToUserConstants.FAILURE_MUSIC_CREATION);
+            }
         } else {
             createErrorAlert(MusicValidationService.errorMessage);
         }
@@ -51,14 +56,17 @@ public class Controller {
     }
 
     @FXML
-    private void OnDownloadButtonClicked() throws IOException {
+    private void OnDownloadButtonClicked() {
         String fileName = getFileInput();
 
         if(fileName.equals("")) {
             fileName = "music_generated";
         }
-        musicPlayer.saveMusic(music.musicString, fileName);
-        createSuccessAlert("Download feito com sucesso");
+        if(musicPlayer.saveMusic(music.musicString, fileName)) {
+            createSuccessAlert(MessagesToUserConstants.SUCCESSFUL_DOWNLOAD);
+        } else {
+            createErrorAlert(MessagesToUserConstants.UNSUCCESSFUL_DOWNLOAD);
+        }
     }
 
     @FXML
@@ -83,14 +91,14 @@ public class Controller {
 
     private void createErrorAlert(String message) {
         Alert empty_string = new Alert(Alert.AlertType.ERROR);
-        empty_string.setTitle("Erro!");
+        empty_string.setTitle(MessagesToUserConstants.ERROR_MESSAGE);
         empty_string.setHeaderText(message);
         empty_string.showAndWait();
     }
 
     private void createSuccessAlert(String message) {
         Alert empty_string = new Alert(Alert.AlertType.CONFIRMATION);
-        empty_string.setTitle("Sucesso");
+        empty_string.setTitle(MessagesToUserConstants.SUCCESS_MESSAGE);
         empty_string.setHeaderText(message);
         empty_string.showAndWait();
     }
