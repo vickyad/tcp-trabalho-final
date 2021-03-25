@@ -1,5 +1,7 @@
 package Services;
 
+import Constants.JFugueMusicConstants;
+import Constants.TextConstants;
 import Music.InstrumentEnum;
 import Music.NoteEnum;
 import java.util.ArrayList;
@@ -9,14 +11,10 @@ import java.util.regex.*;
 import java.util.stream.Collectors;
 
 public class TextConvertorService {
-    private static final String PAUSE = "R";
-    private static final String BPM = "T";
-    private static final String INSTRUMENT = "I";
-    private static final String BLANK_SPACE = " ";
-    private int currentOctave;      // oitava do momento
-    private int currentInstrument;  // instrumento atual (primeiramente escolhido pelo tal do usuário)
-    private int currentVolume;      // volume atual da música
-    private int currentBpm;         // BPM atual (primeiramente escolhido pelo tal do usuário)
+    private int currentOctave;
+    private int currentInstrument;
+    private int currentVolume;
+    private int currentBpm;
 
     public TextConvertorService(){
         currentOctave = 1;
@@ -39,7 +37,7 @@ public class TextConvertorService {
 
         StringBuilder musical_string = new StringBuilder();
         for(String item : musical_list) {
-            musical_string.append(item).append(BLANK_SPACE);
+            musical_string.append(item).append(TextConstants.BLANK_SPACE);
         }
 
         return musical_string.toString();
@@ -62,7 +60,7 @@ public class TextConvertorService {
 
     // Passo 2: adicionar as pausas
     private List<String> addPauses(List<String> list) {
-        return list.stream().map(item -> item.equals(BLANK_SPACE)? PAUSE : item).collect(Collectors.toList());
+        return list.stream().map(item -> item.equals(TextConstants.BLANK_SPACE)? JFugueMusicConstants.PAUSE: item).collect(Collectors.toList());
     }
 
     // Passo 3: conversão das notas nas oitavas certas
@@ -87,23 +85,23 @@ public class TextConvertorService {
                 int note_int = currentNote.getValue() + currentOctave * 12;
                 result.add(String.valueOf(note_int));
                 lastChange = String.valueOf(note_int);
-            } else if(item.equals("T+")) {
+            } else if(item.equals(TextConstants.INCREASE_OCTAVE)) {
                 if(currentOctave < 9){
                     currentOctave ++;
                 }
-            } else if (item.equals("T-")) {
+            } else if (item.equals(TextConstants.DECREASE_OCTAVE)) {
                 if(currentOctave > 0) {
                     currentOctave--;
                 }
-            } else if (item.equalsIgnoreCase("i") || item.equalsIgnoreCase("o") || item.equalsIgnoreCase("u")) {
+            } else if (item.equalsIgnoreCase(TextConstants.REPEAT_NOTE_OP1) || item.equalsIgnoreCase(TextConstants.REPEAT_NOTE_OP2) || item.equalsIgnoreCase(TextConstants.REPEAT_NOTE_OP3)) {
                 result.add(lastChange);
-            } else if (item.equals(".") || item.equals("?")) {
+            } else if (item.equals(TextConstants.RANDOM_NOTE_OP1) || item.equals(TextConstants.RANDOM_NOTE_OP2)) {
                 lastChange = NoteEnum.getRandomNote(currentOctave * 12);
                 result.add(lastChange);
 
             } else {
-                if(item.equals(PAUSE)) {
-                    lastChange = PAUSE;
+                if(item.equals(JFugueMusicConstants.PAUSE)) {
+                    lastChange = JFugueMusicConstants.PAUSE;
                 }
                 result.add(item);
             }
@@ -114,27 +112,27 @@ public class TextConvertorService {
 
     //Passo 4: ajuste nos BPM's
     private void setBpm(List<String> list) {
-        list.add(0, BPM + currentBpm);
+        list.add(0, JFugueMusicConstants.BPM + currentBpm);
 
-        if(list.contains("BPM+")){
+        if(list.contains(TextConstants.INCREASE_BPM)){
             if(currentBpm <= 170){
                 currentBpm+= 50;
             }
-            list.set(list.indexOf("BPM+"), BPM + currentBpm);
-        } else if(list.contains("BPM-")) {
+            list.set(list.indexOf(TextConstants.INCREASE_BPM), JFugueMusicConstants.BPM + currentBpm);
+        } else if(list.contains(TextConstants.DECREASE_BPM)) {
             if(currentBpm >= 90){
                 currentBpm-= 50;
             }
-            list.set(list.indexOf("BPM-"), BPM + currentBpm);
+            list.set(list.indexOf(TextConstants.DECREASE_BPM), JFugueMusicConstants.BPM + currentBpm);
         }
     }
 
     // Passo 5: ajuste dos instrumentos
     private void setInstruments(List<String> list) {
-        list.add(0, INSTRUMENT + currentInstrument);
+        list.add(0, JFugueMusicConstants.INSTRUMENT + currentInstrument);
 
-        if(list.contains("\n")){
-            list.set(list.indexOf("\n"), INSTRUMENT + InstrumentEnum.getRandomInstrument());
+        if(list.contains(TextConstants.RANDOM_INSTRUMENT)){
+            list.set(list.indexOf(TextConstants.RANDOM_INSTRUMENT), JFugueMusicConstants.INSTRUMENT + InstrumentEnum.getRandomInstrument());
         }
 
     }
@@ -143,14 +141,14 @@ public class TextConvertorService {
     private List<String> setVolume(List<String> list, int initialVolume) {
         List<String> result = new ArrayList<>();
         for (String item : list) {
-            if(item.equals("+")) {
+            if(item.equals(TextConstants.INCREASE_VOLUME)) {
                 if(currentVolume * 2 < 127) {
                     currentVolume *= 2;
                 } else {
                     currentVolume = 127;
                 }
                 result.add(":CON(7," + currentVolume + ")");
-            } else if (item.equals("-")) {
+            } else if (item.equals(TextConstants.RESET_VOLUME)) {
                 result.add(":CON(7," + initialVolume + ")");
             } else {
                 result.add(item);
