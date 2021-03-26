@@ -1,5 +1,6 @@
 package Services;
 
+import Constants.ConstraintsConstants;
 import Constants.JFugueMusicConstants;
 import Constants.TextConstants;
 import Music.InstrumentEnum;
@@ -83,11 +84,11 @@ public class TextConvertorService implements ITextConvertorService{
                 result.add(String.valueOf(note_int));
                 lastChange = String.valueOf(note_int);
             } else if(item.equals(TextConstants.INCREASE_OCTAVE)) {
-                if(currentOctave < 9){
+                if(currentOctave < ConstraintsConstants.MAX_OCTAVE){
                     currentOctave ++;
                 }
             } else if (item.equals(TextConstants.DECREASE_OCTAVE)) {
-                if(currentOctave > 0) {
+                if(currentOctave > ConstraintsConstants.MIN_OCTAVE) {
                     currentOctave--;
                 }
             } else if (item.equalsIgnoreCase(TextConstants.REPEAT_NOTE_OP1) || item.equalsIgnoreCase(TextConstants.REPEAT_NOTE_OP2) || item.equalsIgnoreCase(TextConstants.REPEAT_NOTE_OP3)) {
@@ -136,10 +137,10 @@ public class TextConvertorService implements ITextConvertorService{
         List<String> result = new ArrayList<>();
         for (String item : list) {
             if(item.equals(TextConstants.INCREASE_VOLUME)) {
-                if(currentVolume * 2 < 127) {
+                if(currentVolume * 2 < ConstraintsConstants.MAX_VOLUME) {
                     currentVolume *= 2;
                 } else {
-                    currentVolume = 127;
+                    currentVolume = ConstraintsConstants.MAX_VOLUME;
                 }
                 result.add(":CON(7," + currentVolume + ")");
             } else if (item.equals(TextConstants.RESET_VOLUME)) {

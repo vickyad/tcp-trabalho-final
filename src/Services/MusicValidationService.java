@@ -1,5 +1,6 @@
 package Services;
 
+import Constants.ConstraintsConstants;
 import Constants.MessagesToUserConstants;
 
 public class MusicValidationService implements IMusicValidationService {
@@ -9,7 +10,7 @@ public class MusicValidationService implements IMusicValidationService {
         if(text.trim().equals("")) {
             errorMessage = MessagesToUserConstants.EMPTY_STRING_MESSAGE;
             return false;
-        } else if(text.length() > 240){
+        } else if(text.length() > ConstraintsConstants.MAX_TEXT_SIZE){
             errorMessage = MessagesToUserConstants.TOO_LONG_STRING_MESSAGE;
             return false;
         } else if(instrument == null) {
@@ -24,7 +25,7 @@ public class MusicValidationService implements IMusicValidationService {
         try {
             bpm = Integer.parseInt(bpm_string);
 
-            if(bpm < 40 || bpm > 220) {
+            if(bpm < ConstraintsConstants.MIN_BPM || bpm > ConstraintsConstants.MAX_BPM) {
                 errorMessage = MessagesToUserConstants.INVALID_BPM_VALUE;
                 bpm = -1;
             }
