@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("GUI/userInterface.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("GUI/GUIzinha_2.fxml"));
         primaryStage.setTitle("Jukebox");
         primaryStage.setScene(new Scene(root, 779, 633));
         primaryStage.show();

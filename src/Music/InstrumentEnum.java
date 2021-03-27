@@ -3,7 +3,7 @@ package Music;
 import java.util.Random;
 
 public enum InstrumentEnum {
-    Piano(0), Guitar(24), Violin(40), Trumpet(56), Bass(32);
+    Hapsichord(6), TubularBells(14), Agogo(113), PanFlute(75), ChurchOrgan(19);
     private final int value;
 
     InstrumentEnum(int i) {

@@ -27,7 +27,7 @@ public class Controller {
 
     @FXML
     private void initialize() {
-        String[] instruments = {"Violin", "Piano", "Guitar", "Bass", "Trumpet"};
+        String[] instruments = {"Hapsichord", "TubularBells", "Agogo", "PanFlute", "ChurchOrgan"};
         choiceBox.setItems(FXCollections.observableArrayList(instruments));
     }
 
