@@ -11,6 +11,6 @@ public class MusicPlayerTest {
         String musicString = "A B C D";
         String fileName = "saveTest";
 
-        assertTrue(player.saveMusic(musicString, fileName));
+        assertTrue(player.downloadMusic(musicString, fileName));
     }
 }

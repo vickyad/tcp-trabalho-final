@@ -1,5 +1,8 @@
 package Services;
 
+import Constants.ConstraintsConstants;
+import Constants.JFugueMusicConstants;
+import Constants.TextConstants;
 import Music.NoteEnum;
 import java.util.ArrayList;
 
@@ -10,15 +13,15 @@ public class TextConvertorService implements ITextConvertorService{
         currentOctave = 1;
     }
 
-    public String convert(String raw_text, int initialVolume, int initialBpm, int initialInstrument) {
-        int currentVolume = initialVolume;
+    public String convert(String raw_text, int initialBpm, int initialInstrument) {
+        int currentVolume = ConstraintsConstants.MAX_VOLUME;
         int currentInstrument = initialInstrument;
 
         ArrayList<String> resultArray = new ArrayList<>();
         NoteEnum lastNote = null;
 
-        resultArray.add("I" + initialInstrument);
-        resultArray.add("T" + initialBpm);
+        resultArray.add(JFugueMusicConstants.INSTRUMENT + initialInstrument);
+        resultArray.add(JFugueMusicConstants.BPM + initialBpm);
 
         for(int character = 0; character < raw_text.length(); character++){
             switch (raw_text.charAt(character)) {
@@ -44,7 +47,7 @@ public class TextConvertorService implements ITextConvertorService{
                     if(currentVolume < 64) {
                         currentVolume *= 2;
                     } else {
-                        currentVolume = initialVolume;
+                        currentVolume = 0;
                     }
                     resultArray.add(":CON(7," + currentVolume + ")");
                     break;
@@ -94,7 +97,7 @@ public class TextConvertorService implements ITextConvertorService{
 
         StringBuilder sb = new StringBuilder();
         for (String s : resultArray) {
-            sb.append(s).append(" ");
+            sb.append(s).append(TextConstants.BLANK_SPACE);
         }
         String str = sb.toString();
         System.out.println(str);

@@ -12,8 +12,7 @@ public class MusicPlayer implements IMusicPlayer {
         Pattern pattern = new Pattern(musicString);
         player.play(pattern);
     }
-
-    public boolean saveMusic(String musicString, String filename) {
+    public boolean downloadMusic(String musicString, String filename) {
         try{
             File file = new File(filename + ".mid");
             org.jfugue.pattern.Pattern pat = new org.jfugue.pattern.Pattern();

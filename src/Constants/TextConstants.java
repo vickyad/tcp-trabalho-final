@@ -1,7 +1,8 @@
 package Constants;
 
 public class TextConstants {
-    public static final String DOUBLE_VOLUME = " ";
+    public static final String EMPTY_STRING = "";
+    public static final String BLANK_SPACE = " ";
     public static final String INCREASE_OCTAVE_OP1 = "?";
     public static final String INCREASE_OCTAVE_OP2 = ".";
     public static final String CHANGE_TO_AGOGO = "!";

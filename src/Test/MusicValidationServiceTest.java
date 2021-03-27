@@ -9,25 +9,25 @@ public class MusicValidationServiceTest {
 
     @Test
     public void testEmptyText() {
-        assertFalse(musicValidationService.validateString("", "Piano"));
-        assertFalse(musicValidationService.validateString("   ", "Piano"));
-        assertFalse(musicValidationService.validateString("\n", "Piano"));
+        assertFalse(musicValidationService.validateString(""));
+        assertFalse(musicValidationService.validateString("   "));
+        assertFalse(musicValidationService.validateString("\n"));
     }
 
     @Test
     public void testTooLongText() {
-        assertFalse(musicValidationService.validateString("This string is just a test, but, in this test, this string is too long. This string shouldn't be accepted yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada", "Piano"));
+        assertFalse(musicValidationService.validateString("This string is just a test, but, in this test, this string is too long. This string shouldn't be accepted yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada"));
     }
 
     @Test
     public void testEmptyInstrument() {
-        assertFalse(musicValidationService.validateString("This string is just a test", null));
+        assertFalse(musicValidationService.validateInstrument(null));
     }
 
     @Test
     public void testValidStringInput() {
-        assertTrue(musicValidationService.validateString("This string is just a test", "Piano"));
-        assertTrue(musicValidationService.validateString("This string is just a test, but, in this test, this string is just long enough. This string should be accepted yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada", "Bass"));
+        assertTrue(musicValidationService.validateString("This string is just a test"));
+        assertTrue(musicValidationService.validateString("This string is just a test, but, in this test, this string is just long enough. This string should be accepted yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada"));
     }
 
     @Test

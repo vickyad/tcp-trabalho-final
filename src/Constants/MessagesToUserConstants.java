@@ -9,7 +9,9 @@ public class MessagesToUserConstants {
     public final static String INVALID_BPM_TYPE = "O BPM deve ser um valor numérico";
     public final static String UNSUCCESSFUL_DOWNLOAD = "Não foi possível fazer o download da música";
     public final static String FAILURE_MUSIC_CREATION = "Não foi possível musicar o texto fornecido";
+    public final static String MUSIC_NOT_GENERATED = "A música ainda não foi gerada!";
     public final static String SUCCESS_MESSAGE = "Sucesso!";
     public final static String SUCCESSFUL_DOWNLOAD = "O download foi feito com sucesso";
     public final static String SUCCESSFUL_MUSIC_CREATION = "A música foi criada com sucesso";
+    public final static String OPEN_TEXT_FILE = "Escolha o arquivo de texto";
 }

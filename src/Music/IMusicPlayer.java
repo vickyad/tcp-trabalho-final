@@ -2,5 +2,5 @@ package Music;
 
 public interface IMusicPlayer {
     void playMusic(String musicString);
-    boolean saveMusic(String musicString, String filename);
+    boolean downloadMusic(String musicString, String filename);
 }
