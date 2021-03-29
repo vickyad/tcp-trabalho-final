@@ -13,11 +13,10 @@ public class TextConvertorService implements ITextConvertorService{
         currentOctave = 1;
     }
 
-    public String convert(String raw_text, int initialBpm, int initialInstrument) {
-        String resultString = cleanString(raw_text);
-        ArrayList<String> manipulationArray;
+    public String convert(String rawText, int initialBpm, int initialInstrument) {
+        String resultString = cleanString(rawText);
 
-        manipulationArray = setVolume(resultString.toCharArray());
+        ArrayList<String> manipulationArray = setVolume(resultString.toCharArray());
         manipulationArray = setInstruments(manipulationArray, initialInstrument);
         manipulationArray = setNotesOnOctaves(manipulationArray);
 
@@ -39,29 +38,29 @@ public class TextConvertorService implements ITextConvertorService{
     }
 
     private String cleanString(String text){
-        text = text.replaceAll("[RT]", "r");
-        text = text.replaceAll("[IO]", "i");
+        text = text.replaceAll("[RT]", TextConstants.GENERIC_CONSONANT);
+        text = text.replaceAll("[IO]", TextConstants.GENERIC_VOGAL);
         return text;
     }
 
     private ArrayList<String> setVolume(char[] text) {
         int currentVolume = ConstraintsConstants.MAX_VOLUME;
-        ArrayList<String> arrayList = new ArrayList<>();
+        ArrayList<String> resultArray = new ArrayList<>();
 
-        for (char c : text) {
-            if (c == ' ') {
-                if (currentVolume < 64) {
+        for (char character : text) {
+            if (character == ' ') {
+                if (currentVolume * 2 < ConstraintsConstants.MAX_VOLUME) {
                     currentVolume *= 2;
                 } else {
-                    currentVolume = 40;
+                    currentVolume = ConstraintsConstants.DEFAULT_VOLUME;
                 }
-                arrayList.add(":CON(7," + currentVolume + ")");
+                resultArray.add(JFugueMusicConstants.VOLUME + currentVolume + JFugueMusicConstants.CLOSE_PARENTESIS);
             } else {
-                arrayList.add(String.valueOf(c));
+                resultArray.add(String.valueOf(character));
             }
         }
 
-        return arrayList;
+        return resultArray;
     }
 
     private ArrayList<String> setInstruments(ArrayList<String> text, int initialInstrument) {
@@ -71,23 +70,27 @@ public class TextConvertorService implements ITextConvertorService{
         arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
 
         for (String substring : text) {
-            if (substring.contains("!")) {
+            if (substring.contains(TextConstants.AGOGO_CHARACTER)) {
                 currentInstrument = 113;
                 arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (substring.contains("\n")) {
+            } else if (substring.contains(TextConstants.TUBULAR_BELLS_CHARACTER)) {
                 currentInstrument = 14;
                 arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (substring.contains(";")) {
+            } else if (substring.contains(TextConstants.PAN_FLUTE_CHARACTER)) {
                 currentInstrument = 75;
                 arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (substring.contains(",") && !substring.contains("CON")) {
+            } else if (substring.contains(TextConstants.CHURCH_ORGAN_CHARACTER) && !substring.contains(JFugueMusicConstants.VOLUME)) {
                 currentInstrument = 19;
                 arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if ("iouU".contains(substring)) {
+            } else if (TextConstants.HARPSICHORD_CHARACTERS.contains(substring)) {
                 currentInstrument = 6;
                 arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if ("0123456789".contains(substring)) {
-                arrayList.add("I" + (currentInstrument + Character.digit(Integer.parseInt(substring), 10)));
+            } else if (TextConstants.DIGIT_CHARACTERS.contains(substring)) {
+                int newInstrumentValue = currentInstrument + Character.digit(Integer.parseInt(substring), 10);
+                if (newInstrumentValue > 127) {
+                    currentInstrument = newInstrumentValue;
+                }
+                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
             } else {
                 arrayList.add(substring);
             }
@@ -101,19 +104,19 @@ public class TextConvertorService implements ITextConvertorService{
         NoteEnum lastNote = null;
 
         for (String substring : text) {
-            if (substring.contains("CON") || substring.contains(JFugueMusicConstants.INSTRUMENT)) {
+            if (substring.contains(JFugueMusicConstants.VOLUME) || substring.contains(JFugueMusicConstants.INSTRUMENT)) {
                 arrayList.add(substring);
-            } else if ("ABCDEFG".contains(substring)) {
+            } else if (TextConstants.NOTES_CHARACTERS.contains(substring)) {
                 lastNote = NoteEnum.valueOf(substring);
                 arrayList.add(String.valueOf(lastNote.getValue() + currentOctave * 12));
             } else {
-                if ("abcdefg".contains(substring) && lastNote != null) {
+                if (TextConstants.A_TO_G_LOWERCASE.contains(substring) && lastNote != null) {
                     arrayList.add(String.valueOf(lastNote.getValue() + currentOctave * 12));
-                } else if (".?".contains(substring)) {
-                    if (currentOctave < 9) {
+                } else if (TextConstants.INCREASE_OCTAVE_CHARACTERS.contains(substring)) {
+                    if (currentOctave < ConstraintsConstants.MAX_OCTAVE) {
                         currentOctave++;
                     } else {
-                        currentOctave = 0;
+                        currentOctave = ConstraintsConstants.MIN_OCTAVE;
                     }
                 } else {
                     arrayList.add(JFugueMusicConstants.PAUSE);

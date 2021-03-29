@@ -2,11 +2,11 @@ package Music;
 
 import Services.TextConvertorService;
 
-public class Music {
+public class Music implements IMusic {
     public String musicString;
 
-    public void createMusicFromText(String raw_text, int initialBpm, int initialInstrument){
+    public void createMusicFromText(String rawText, int initialBpm, int initialInstrument) {
         TextConvertorService textConvertor = new TextConvertorService();
-        musicString = textConvertor.convert(raw_text, initialBpm, initialInstrument);
+        musicString = textConvertor.convert(rawText, initialBpm, initialInstrument);
     }
 }

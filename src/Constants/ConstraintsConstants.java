@@ -12,5 +12,6 @@ public class ConstraintsConstants {
     public static final int INVALID_BPM = -1;
     public static final int MIN_OCTAVE = 0;
     public static final int MAX_OCTAVE = 9;
+    public static final int DEFAULT_VOLUME = 30;
     public static final int MAX_VOLUME = 127;
 }

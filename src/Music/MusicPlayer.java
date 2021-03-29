@@ -6,11 +6,8 @@ import java.io.File;
 import java.io.IOException;
 
 public class MusicPlayer implements IMusicPlayer {
-    private final static Player player = new Player();
-
     public void playMusic(String musicString){
-        Pattern pattern = new Pattern(musicString);
-        player.play(pattern);
+        new Thread(createThread(musicString)).start();
     }
     public boolean downloadMusic(String musicString, String filename) {
         try{
@@ -23,5 +20,13 @@ public class MusicPlayer implements IMusicPlayer {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private Runnable createThread (String musicString) {
+        return () -> {
+            Player player = new Player();
+            Pattern pattern = new Pattern(musicString);
+            player.play(pattern);
+        };
     }
 }

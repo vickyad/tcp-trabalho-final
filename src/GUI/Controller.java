@@ -39,7 +39,7 @@ public class Controller {
     @FXML
     private void OnGenerateMusicButtonClicked() {
         MusicValidationService musicValidationService = new MusicValidationService();
-        UserInputs userInputs= new UserInputs(getTextInput(), onSelectInstrument(), musicValidationService.parseBPM(getBPMInput()));
+        UserInputs userInputs = new UserInputs(getTextInput(), onSelectInstrument(), musicValidationService.parseBPM(getBPMInput()));
 
         if(validateUserInputs(musicValidationService, userInputs)) {
             music.createMusicFromText(userInputs.getTextInput(), userInputs.getInitialBPM(), InstrumentEnum.valueOf(userInputs.getInitialInstrument()).getValue());

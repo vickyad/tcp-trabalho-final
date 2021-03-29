@@ -23,14 +23,13 @@ public class MusicValidationService implements IMusicValidationService {
             errorMessage = MessagesToUserConstants.NULL_INSTRUMENT;
             return false;
         }
-
         return true;
     }
 
-    public int parseBPM(String bpm_string){
+    public int parseBPM(String bpmString){
         int bpm;
         try {
-            bpm = Integer.parseInt(bpm_string);
+            bpm = Integer.parseInt(bpmString);
 
             if(bpm < ConstraintsConstants.MIN_BPM || bpm > ConstraintsConstants.MAX_BPM) {
                 errorMessage = MessagesToUserConstants.INVALID_BPM_VALUE;
