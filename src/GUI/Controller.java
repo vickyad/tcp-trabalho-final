@@ -129,7 +129,7 @@ public class Controller {
     }
 
     @FXML
-    public void chooseInputFile() {
+    private void chooseInputFile() {
         final Stage stage = new Stage();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle(MessagesToUserConstants.OPEN_TEXT_FILE);

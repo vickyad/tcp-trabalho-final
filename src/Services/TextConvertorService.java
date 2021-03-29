@@ -1,8 +1,9 @@
 package Services;
 
+import Constants.ConstraintsConstants;
+import Constants.JFugueMusicConstants;
 import Constants.TextConstants;
 import Music.NoteEnum;
-
 import java.util.ArrayList;
 
 public class TextConvertorService implements ITextConvertorService{
@@ -21,7 +22,9 @@ public class TextConvertorService implements ITextConvertorService{
         manipulationArray = setNotesOnOctaves(manipulationArray);
 
         resultString = convertArrayToString(manipulationArray);
-        resultString = "T" + initialBpm + " " + resultString;
+        resultString = JFugueMusicConstants.BPM + initialBpm + TextConstants.BLANK_SPACE + resultString;
+
+        System.out.println(resultString);
 
         return resultString;
     }
@@ -42,7 +45,7 @@ public class TextConvertorService implements ITextConvertorService{
     }
 
     private ArrayList<String> setVolume(char[] text) {
-        int currentVolume = 127;
+        int currentVolume = ConstraintsConstants.MAX_VOLUME;
         ArrayList<String> arrayList = new ArrayList<>();
 
         for (char c : text) {
@@ -65,24 +68,24 @@ public class TextConvertorService implements ITextConvertorService{
         int currentInstrument = initialInstrument;
         ArrayList<String> arrayList = new ArrayList<>();
 
-        arrayList.add("I" + currentInstrument);
+        arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
 
         for (String substring : text) {
             if (substring.contains("!")) {
-                arrayList.add("I113");
                 currentInstrument = 113;
+                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
             } else if (substring.contains("\n")) {
-                arrayList.add("I14");
                 currentInstrument = 14;
+                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
             } else if (substring.contains(";")) {
-                arrayList.add("I75");
                 currentInstrument = 75;
+                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
             } else if (substring.contains(",") && !substring.contains("CON")) {
-                arrayList.add("I19");
                 currentInstrument = 19;
+                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
             } else if ("iouU".contains(substring)) {
-                arrayList.add("I6");
                 currentInstrument = 6;
+                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
             } else if ("0123456789".contains(substring)) {
                 arrayList.add("I" + (currentInstrument + Character.digit(Integer.parseInt(substring), 10)));
             } else {
@@ -98,7 +101,7 @@ public class TextConvertorService implements ITextConvertorService{
         NoteEnum lastNote = null;
 
         for (String substring : text) {
-            if (substring.contains("CON") || substring.contains("I")) {
+            if (substring.contains("CON") || substring.contains(JFugueMusicConstants.INSTRUMENT)) {
                 arrayList.add(substring);
             } else if ("ABCDEFG".contains(substring)) {
                 lastNote = NoteEnum.valueOf(substring);
@@ -113,7 +116,7 @@ public class TextConvertorService implements ITextConvertorService{
                         currentOctave = 0;
                     }
                 } else {
-                    arrayList.add("R");
+                    arrayList.add(JFugueMusicConstants.PAUSE);
                 }
                 lastNote = null;
             }

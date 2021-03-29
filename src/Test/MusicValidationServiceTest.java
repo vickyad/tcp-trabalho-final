@@ -20,14 +20,19 @@ public class MusicValidationServiceTest {
     }
 
     @Test
+    public void testValidStringInput() {
+        assertTrue(musicValidationService.validateString("This string is just a test"));
+        assertTrue(musicValidationService.validateString("This string is just a test, but, in this test, this string is just long enough. This string should be accepted yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada"));
+    }
+
+    @Test
     public void testEmptyInstrument() {
         assertFalse(musicValidationService.validateInstrument(null));
     }
 
     @Test
-    public void testValidStringInput() {
-        assertTrue(musicValidationService.validateString("This string is just a test"));
-        assertTrue(musicValidationService.validateString("This string is just a test, but, in this test, this string is just long enough. This string should be accepted yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada yada"));
+    public void testValidInstrument() {
+        assertTrue(musicValidationService.validateInstrument("Agogo"));
     }
 
     @Test
