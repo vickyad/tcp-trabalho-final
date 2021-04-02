@@ -5,12 +5,20 @@ import Constants.JFugueMusicConstants;
 import Constants.TextConstants;
 import Music.NoteEnum;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class TextConvertorService implements ITextConvertorService{
     private int currentOctave;
+    private final HashMap<String, Integer> instrumentHashMap = new HashMap<>();
 
     public TextConvertorService(){
         currentOctave = 1;
+
+        instrumentHashMap.put(TextConstants.AGOGO_CHARACTER, 113);
+        instrumentHashMap.put(TextConstants.TUBULAR_BELLS_CHARACTER, 14);
+        instrumentHashMap.put(TextConstants.PAN_FLUTE_CHARACTER, 75);
+        instrumentHashMap.put(TextConstants.CHURCH_ORGAN_CHARACTER, 19);
+        instrumentHashMap.put(TextConstants.HARPSICHORD_CHARACTERS, 6);
     }
 
     public String convert(String rawText, int initialBpm, int initialInstrument) {
@@ -39,7 +47,7 @@ public class TextConvertorService implements ITextConvertorService{
 
     private String cleanString(String text){
         text = text.replaceAll("[RT]", TextConstants.GENERIC_CONSONANT);
-        text = text.replaceAll("[IO]", TextConstants.GENERIC_VOGAL);
+        text = text.replaceAll("[ouIOU]", TextConstants.GENERIC_VOCAL);
         return text;
     }
 
@@ -54,7 +62,7 @@ public class TextConvertorService implements ITextConvertorService{
                 } else {
                     currentVolume = ConstraintsConstants.DEFAULT_VOLUME;
                 }
-                resultArray.add(JFugueMusicConstants.VOLUME + currentVolume + JFugueMusicConstants.CLOSE_PARENTESIS);
+                resultArray.add(JFugueMusicConstants.VOLUME + currentVolume + JFugueMusicConstants.CLOSE_PARENTHESIS);
             } else {
                 resultArray.add(String.valueOf(character));
             }
@@ -66,29 +74,16 @@ public class TextConvertorService implements ITextConvertorService{
     private ArrayList<String> setInstruments(ArrayList<String> text, int initialInstrument) {
         int currentInstrument = initialInstrument;
         ArrayList<String> arrayList = new ArrayList<>();
-
         arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
 
         for (String substring : text) {
-            if (substring.contains(TextConstants.AGOGO_CHARACTER)) {
-                currentInstrument = 113;
+            if(instrumentHashMap.containsKey(substring)) {
+                currentInstrument = instrumentHashMap.get(substring);
                 arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (substring.contains(TextConstants.TUBULAR_BELLS_CHARACTER)) {
-                currentInstrument = 14;
-                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (substring.contains(TextConstants.PAN_FLUTE_CHARACTER)) {
-                currentInstrument = 75;
-                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (substring.contains(TextConstants.CHURCH_ORGAN_CHARACTER) && !substring.contains(JFugueMusicConstants.VOLUME)) {
-                currentInstrument = 19;
-                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (TextConstants.HARPSICHORD_CHARACTERS.contains(substring)) {
-                currentInstrument = 6;
-                arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
-            } else if (TextConstants.DIGIT_CHARACTERS.contains(substring)) {
-                int newInstrumentValue = currentInstrument + Character.digit(Integer.parseInt(substring), 10);
-                if (newInstrumentValue > 127) {
-                    currentInstrument = newInstrumentValue;
+            }else if (TextConstants.DIGIT_CHARACTERS.contains(substring)) {
+                currentInstrument = currentInstrument + Integer.parseInt(substring);
+                if (currentInstrument > 127) {
+                    currentInstrument -= 127;
                 }
                 arrayList.add(JFugueMusicConstants.INSTRUMENT + currentInstrument);
             } else {

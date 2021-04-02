@@ -1,21 +1,21 @@
 package GUI;
 
-import Constants.ConstraintsConstants;
-import Constants.MessagesToUserConstants;
-import Constants.TextConstants;
 import javafx.fxml.FXML;
 import javafx.collections.FXCollections;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import Music.Music;
-import Music.MusicPlayer;
-import Music.InstrumentEnum;
-import Services.MusicValidationService;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.*;
+import java.util.HashMap;
+import Constants.ConstraintsConstants;
+import Constants.MessagesToUserConstants;
+import Constants.TextConstants;
+import Music.Music;
+import Music.MusicPlayer;
+import Services.MusicValidationService;
 
 public class Controller {
     @FXML
@@ -29,11 +29,18 @@ public class Controller {
 
     private final Music music = new Music();
     private final MusicPlayer player = new MusicPlayer();
+    private final HashMap<String, Integer> instrumentHashMap = new HashMap<>();
 
     @FXML
     private void initialize() {
-        String[] instruments = {"Harpsichord", "TubularBells", "Agogo", "PanFlute", "ChurchOrgan"};
+        String[] instruments = {"Harpsichord", "Tubular Bells", "Agogo", "Pan Flute", "Church Organ"};
         choiceBox.setItems(FXCollections.observableArrayList(instruments));
+
+        instrumentHashMap.put("Agogo", 113);
+        instrumentHashMap.put("Tubular Bells", 14);
+        instrumentHashMap.put("Pan Flute", 75);
+        instrumentHashMap.put("Church Organ", 19);
+        instrumentHashMap.put("Harpsichord", 6);
     }
 
     @FXML
@@ -42,7 +49,7 @@ public class Controller {
         UserInputs userInputs = new UserInputs(getTextInput(), onSelectInstrument(), musicValidationService.parseBPM(getBPMInput()));
 
         if(validateUserInputs(musicValidationService, userInputs)) {
-            music.createMusicFromText(userInputs.getTextInput(), userInputs.getInitialBPM(), InstrumentEnum.valueOf(userInputs.getInitialInstrument()).getValue());
+            music.createMusicFromText(userInputs.getTextInput(), userInputs.getInitialBPM(), instrumentHashMap.get(userInputs.getInitialInstrument()));
             createSuccessAlert(MessagesToUserConstants.SUCCESSFUL_MUSIC_CREATION);
         } else {
             createErrorAlert(MusicValidationService.errorMessage);
