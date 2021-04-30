@@ -12,5 +12,6 @@ public class MessagesToUserConstants {
     public final static String SUCCESS_MESSAGE = "Sucesso!";
     public final static String SUCCESSFUL_DOWNLOAD = "O download foi feito com sucesso";
     public final static String SUCCESSFUL_MUSIC_CREATION = "A música foi criada com sucesso";
+    public final static String UNSUCCESSFUL_MUSIC_CREATION = "O texto fornecido não pode ser convertido em música";
     public final static String OPEN_TEXT_FILE = "Escolha o arquivo de texto";
 }

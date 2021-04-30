@@ -16,6 +16,8 @@ import Constants.TextConstants;
 import Music.Music;
 import Music.MusicPlayer;
 import Services.MusicValidationService;
+import java.awt.Desktop;
+import java.io.File;
 
 public class Controller {
     @FXML
@@ -50,7 +52,12 @@ public class Controller {
 
         if(validateUserInputs(musicValidationService, userInputs)) {
             music.createMusicFromText(userInputs.getTextInput(), userInputs.getInitialBPM(), instrumentHashMap.get(userInputs.getInitialInstrument()));
-            createSuccessAlert(MessagesToUserConstants.SUCCESSFUL_MUSIC_CREATION);
+
+            if(music.musicString != null){
+                createSuccessAlert(MessagesToUserConstants.SUCCESSFUL_MUSIC_CREATION);
+            } else {
+                createErrorAlert(MessagesToUserConstants.UNSUCCESSFUL_MUSIC_CREATION);
+            }
         } else {
             createErrorAlert(MusicValidationService.errorMessage);
         }
@@ -160,5 +167,26 @@ public class Controller {
 
         String finalString = stringBuilder.toString();
         textInput.setText(finalString);
+    }
+
+    @FXML
+    private void openHelpPDF() {
+                try {
+                    File pdfFile = new File("guia.pdf");
+                    if (pdfFile.exists()) {
+
+                        if (Desktop.isDesktopSupported()) {
+                            Desktop.getDesktop().open(pdfFile);
+                        } else {
+                            System.out.println("Awt Desktop is not supported!");
+                        }
+
+                    } else {
+                        System.out.println("File is not exists!");
+                    }
+
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
     }
 }

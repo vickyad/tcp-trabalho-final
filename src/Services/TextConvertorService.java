@@ -6,6 +6,7 @@ import Constants.TextConstants;
 import Music.NoteEnum;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class TextConvertorService implements ITextConvertorService{
     private int currentOctave;
@@ -22,7 +23,11 @@ public class TextConvertorService implements ITextConvertorService{
     }
 
     public String convert(String rawText, int initialBpm, int initialInstrument) {
-        String resultString = cleanString(rawText);
+        if(rawText.trim().isEmpty() || !verifyNotesExistence(rawText)) {
+            return null;
+        }
+
+        String resultString = cleansString(rawText);
 
         ArrayList<String> manipulationArray = setVolume(resultString.toCharArray());
         manipulationArray = setInstruments(manipulationArray, initialInstrument);
@@ -31,9 +36,11 @@ public class TextConvertorService implements ITextConvertorService{
         resultString = convertArrayToString(manipulationArray);
         resultString = JFugueMusicConstants.BPM + initialBpm + TextConstants.BLANK_SPACE + resultString;
 
-        System.out.println(resultString);
-
         return resultString;
+    }
+
+    private boolean verifyNotesExistence(String rawText) {
+        return Pattern.compile("[A-G]").matcher(rawText).find();
     }
 
     private String convertArrayToString(ArrayList<String> manipulationArray) {
@@ -45,7 +52,7 @@ public class TextConvertorService implements ITextConvertorService{
         return stringBuilder.toString();
     }
 
-    private String cleanString(String text){
+    private String cleansString(String text){
         text = text.replaceAll("[RT]", TextConstants.GENERIC_CONSONANT);
         text = text.replaceAll("[ouIOU]", TextConstants.GENERIC_VOCAL);
         return text;
